@@ -6,37 +6,30 @@ tableBody.innerHTML = `
 </tr>
 `;
 
-let p1 = new Promise((resolve) => {
-    setTimeout(() => {
-        resolve(1);
-    }, 1000);
-});
+function createPromise() {
+    let time = Math.random() * 2 + 1;
 
-let p2 = new Promise((resolve) => {
-    setTimeout(() => {
-        resolve(1.5);
-    }, 1500);
-});
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(time);
+        }, time * 1000);
+    });
+}
 
-let p3 = new Promise((resolve) => {
-    setTimeout(() => {
-        resolve(2);
-    }, 2000);
-});
+let p1 = createPromise();
+let p2 = createPromise();
+let p3 = createPromise();
 
 Promise.all([p1, p2, p3]).then((times) => {
-
     tableBody.innerHTML = "";
 
-    let total = 0;
+    let total = Math.max(...times);
 
     times.forEach((time, index) => {
-        total += time;
-
         tableBody.innerHTML += `
         <tr>
             <td>Promise ${index + 1}</td>
-            <td>${time}</td>
+            <td>${time.toFixed(3)}</td>
         </tr>
         `;
     });
@@ -44,7 +37,7 @@ Promise.all([p1, p2, p3]).then((times) => {
     tableBody.innerHTML += `
     <tr>
         <td>Total</td>
-        <td>${total}</td>
+        <td>${total.toFixed(3)}</td>
     </tr>
     `;
-});``
+});
